@@ -12,6 +12,8 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 
 from pathlib import Path
 import os
+from dotenv import load_dotenv
+from urllib.parse import urlparse
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -30,8 +32,18 @@ ALLOWED_HOSTS = []
 
 # Application definition
 TAILWIND_APP_NAME = 'theme'
-MEDIA_URL = "/media/"
-MEDIA_ROOT = os.path.join(BASE_DIR, "media")
+
+# Cloudflare R2 Configuration
+DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+
+AWS_ACCESS_KEY_ID = '557245eab7acd5383ee209f3c8cc1187'  # From Cloudflare R2
+AWS_SECRET_ACCESS_KEY = 'e8ba2bea3a6e44bdab96b47026e59cb0d92eeb6a80fa3bda90a46eebe935d2a1'  # From Cloudflare R2
+AWS_STORAGE_BUCKET_NAME = 'approvepayment'  # Your R2 bucket name
+AWS_S3_ENDPOINT_URL = 'https://5ef76ef2fdafa0e2960c1af220affe01.r2.cloudflarestorage.com'  # R2 endpoint
+AWS_S3_REGION_NAME = 'auto'  # Cloudflare R2 uses 'auto' as the region
+AWS_S3_CUSTOM_DOMAIN = 'https://5ef76ef2fdafa0e2960c1af220affe01.r2.cloudflarestorage.com/approvepayment'  # Optional: For custom CDN URLs
+
 
 INSTALLED_APPS = [
     'django_browser_reload',  
@@ -43,8 +55,10 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     "image_post",
     'tailwind',
-    'theme'
+    'theme',
+    'storages'
 ]
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -80,10 +94,20 @@ WSGI_APPLICATION = 'mysite.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
+
+load_dotenv()
+
+# Replace the DATABASES section of your settings.py with this
+tmpPostgres = urlparse(os.getenv("DATABASE_URL"))
+
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': tmpPostgres.path.replace('/', ''),
+        'USER': tmpPostgres.username,
+        'PASSWORD': tmpPostgres.password,
+        'HOST': tmpPostgres.hostname,
+        'PORT': 5432,
     }
 }
 

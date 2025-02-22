@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sales and Redemption</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            position: relative;
+        }
+        h1 {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+        .transaction-info {
+            margin-bottom: 20px;
+        }
+        .transaction-info p {
+            margin: 5px 0;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        table, th, td {
+            border: 1px solid black;
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+        }
+        .subtotal {
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+        .approved {
+            margin-top: 20px;
+        }
+        .void-overlay {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) rotate(-45deg);
+            font-size: 80px;
+            font-weight: bold;
+            color: rgba(255, 0, 0, 0.5); /* Red with 50% transparency */
+            pointer-events: none; /* Ensures the overlay doesn't interfere with clicks */
+            z-index: 1000; /* Ensures it's on top of other content */
+            user-select: none; /* Prevents text selection */
+        }
+    </style>
+</head>
+<body>
+    <div class="void-overlay">VOID</div> <!-- Void overlay -->
+
+    <h1>SALES AND REDEMPTION</h1>
+
+    <div class="transaction-info">
+        <p>Transaction Reference: 20240126-00003</p>
+        <p>Transaction Date and Time: January 29, 2024 10:00:00 PM</p>
+        <p>Trough day: January 28, 2024</p>
+        <p>Void Date and Time: January 28, 2024 13:00:00 PM</p>
+    </div>
+
+    <p><strong>Read To:</strong></p>
+    <p>Bilea Tc</p>
+    <p>GWC</p>
+
+    <hr>
+
+    <h2>Name of the Agreement</h2>
+
+    <table>
+        <thead>
+            <tr>
+                <th>GTV</th>
+                <th>RECEPTION</th>
+                <th>UNIT PRICE</th>
+                <th>AMOUNT</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>1</td>
+                <td>Master No.3</td>
+                <td>2,440.00</td>
+                <td>2,440.00</td>
+            </tr>
+            <tr>
+                <td>10</td>
+                <td>Basledif Winston Churchill - Roberto</td>
+                <td>2,869.00</td>
+                <td>21,000.00</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="subtotal">
+        <p>Sub-total | 24,048.00</p>
+    </div>
+
+    <div class="approved">
+        <p><em>Approved:</em></p>
+        <p><em>Full Name of the Agronera</em></p>
+    </div>
+</body>
+</html>

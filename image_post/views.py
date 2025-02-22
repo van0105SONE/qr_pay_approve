@@ -14,5 +14,6 @@ def index(request):
         form = ImagePostForm()
 
     images = ImagePost.objects.all()
+    print( images[1])
     return render(request, 'image_post/index.html', {'form': form, 'images': images})
 
