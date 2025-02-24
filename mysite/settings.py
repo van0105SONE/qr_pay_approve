@@ -29,20 +29,12 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # Application definition
 TAILWIND_APP_NAME = 'theme'
 
-# Cloudflare R2 Configuration
-DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
-STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
-
-AWS_ACCESS_KEY_ID = '557245eab7acd5383ee209f3c8cc1187'  # From Cloudflare R2
-AWS_SECRET_ACCESS_KEY = 'e8ba2bea3a6e44bdab96b47026e59cb0d92eeb6a80fa3bda90a46eebe935d2a1'  # From Cloudflare R2
-AWS_STORAGE_BUCKET_NAME = 'approvepayment'  # Your R2 bucket name
-AWS_S3_ENDPOINT_URL = 'https://5ef76ef2fdafa0e2960c1af220affe01.r2.cloudflarestorage.com'  # R2 endpoint
-AWS_S3_REGION_NAME = 'auto'  # Cloudflare R2 uses 'auto' as the region
-AWS_S3_CUSTOM_DOMAIN = 'https://5ef76ef2fdafa0e2960c1af220affe01.r2.cloudflarestorage.com/approvepayment'  # Optional: For custom CDN URLs
 
 
 INSTALLED_APPS = [
@@ -56,7 +48,7 @@ INSTALLED_APPS = [
     "image_post",
     'tailwind',
     'theme',
-    'storages'
+    'media'
 ]
 
 

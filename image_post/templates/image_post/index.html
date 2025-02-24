@@ -26,10 +26,13 @@
 
 <div class="grid grid-cols-3 gap-4 mt-6">
   {% for image in images %}
-  <div class="border p-4">
-    <h2 class="text-xl font-semibold">{{ image.title }}</h2>
-    <img src="{{ image.image.url }}" alt="{{ image.title }}" class="mt-2 w-full h-48 object-cover" />
+  <div class="flex flex-row">
+    <div class="border p-4">
+      <h2 class="text-xl font-semibold">{{ image.extracted_text  }}</h2>
+      <img src="{{ image.image.url }}" alt="{{ image.extracted_text }}" class="mt-2 w-48 h-48 " style="height: 100px;" />
+    </div>
   </div>
+
   {% empty %}
   <p>No images uploaded yet.</p>
   {% endfor %}
