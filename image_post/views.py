@@ -1,4 +1,5 @@
 import json
+import cv2
 import base64
 from django.shortcuts import render, redirect
 from .models import ImagePost
@@ -8,6 +9,7 @@ import pytesseract
 from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
 from django.core.files.base import ContentFile
+import numpy as np
 
 def index(request):
     if request.method == "POST":
@@ -18,7 +20,10 @@ def index(request):
             image = Image.open(instance.image)
 
             # Extract text using Tesseract OCR
-            extracted_text = pytesseract.image_to_string(image, lang='lao+eng')
+            # Step 2: Convert the image to grayscale
+            gray_image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+            
+            extracted_text = pytesseract.image_to_string(gray_image, lang='lao+eng')
             print('text printed: ', extracted_text)
             # Save the extracted text to the database
             instance.extracted_text = extracted_text
@@ -46,6 +51,22 @@ def upload_image(request):
             ext = format.split('/')[-1]
             image_file = ContentFile(base64.b64decode(imgstr), name=f'capture.{ext}')
 
+            image_bytes = base64.b64decode(imgstr)
+
+            # Convert bytes to a NumPy array
+            nparr = np.frombuffer(image_bytes, np.uint8)
+
+            # Decode the image using OpenCV
+            image = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
+
+            # Convert the image to grayscale
+            gray_image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+
+            # Save the grayscale image to a temporary file (optional, for debugging)
+            cv2.imwrite(f'temp_gray.{ext}', gray_image)
+
+            # Convert the grayscale image to a PIL image for Tesseract OCR
+            pil_image = Image.fromarray(gray_image)
             # Save the image to a temporary file
             with open(f'temp.{ext}', 'wb') as f:
                 f.write(image_file.read())
@@ -54,7 +75,7 @@ def upload_image(request):
             image = Image.open(f'temp.{ext}')
 
             # Extract text using Tesseract OCR
-            extracted_text = pytesseract.image_to_string(image, lang='lao+eng')
+            extracted_text = pytesseract.image_to_string(pil_image, lang='lao+eng')
 
             # Save the image and extracted text to the database
             instance = ImagePost()
